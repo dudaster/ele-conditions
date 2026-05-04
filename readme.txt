@@ -1,10 +1,10 @@
-=== Elementor Element Condition ===
+=== Ele Conditions for Elementor ===
 Contributors: dudaster
 Tags: page-builder, elementor, condition, conditional, conditional elements
 Donate link: https://www.paypal.me/dudaster
-Requires at least: 4.6
-Tested up to: 4.9.8
-Stable tag: 1.0.5
+Requires at least: 5.0
+Tested up to: 6.8
+Stable tag: 1.0.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,12 @@ No. For the moment you can only do a basic condition with 2 operands and 1 compa
 1. /assets/screenshot-1.png
 
 == Changelog ==
+
+= 1.0.6 =
+* Rename plugin display name to comply with WordPress.org trademark guidelines.
+* Fix text domain to match plugin slug (ele-conditions).
+* Update Tested up to WordPress 6.8.
+* Add direct file access protection to PHP files.
 
 = 1.0.5 =
 * Now it set the value of variabile to 0 if is compared to a number.

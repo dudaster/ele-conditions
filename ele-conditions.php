@@ -1,12 +1,12 @@
 <?php
 /*
  * Plugin Name: Ele Conditions
- * Version: 1.0.5
- * Description: Elementor conditions for elements and widgets.
+ * Version: 1.0.6
+ * Description: Conditional display logic for Elementor elements and widgets.
  * Plugin URI: https://www.eletemplator.com
  * Author: Liviu Duda
  * Author URI: https://www.leadpro.ro
- * Text Domain: elecond
+ * Text Domain: ele-conditions
  * Domain Path: /languages
  * License: GPLv3
  * License URI: http://www.gnu.org/licenses/gpl-3.0

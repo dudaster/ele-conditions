@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 require_once ELECONDITIONS_DIR.'inc/parse_conditions.php';
 
@@ -10,7 +11,7 @@ add_action( 'elementor/element/before_section_start', function( $element, $secti
       'conditional_section',
       [
         'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-        'label' => __( 'Condition', 'elementor' ),
+        'label' => __( 'Condition', 'ele-conditions' ),
       ]
     );
 
@@ -18,14 +19,14 @@ add_action( 'elementor/element/before_section_start', function( $element, $secti
       'element_condition',
       [
       'type' => \Elementor\Controls_Manager::TEXTAREA,
-      'label' => __( 'Write your conditions:', 'elementor' ),
+      'label' => __( 'Write your conditions:', 'ele-conditions' ),
       ]
     );
      
     $element->add_control(
     'element_condition_info',
     [
-      'label' => __( 'Currently the conditions work with 2 operands and 1 operator ( == , != , === , !== , < , > , <= , >= ). <br/>If you want to check if a variable it has value, compare it with null (if "var!=null" that means it var has value)' ),
+      'label' => __( 'Currently the conditions work with 2 operands and 1 operator ( == , != , === , !== , < , > , <= , >= ). <br/>If you want to check if a variable it has value, compare it with null (if "var!=null" that means it var has value)', 'ele-conditions' ),
       'type' => \Elementor\Controls_Manager::RAW_HTML,
     ]
     );
@@ -33,18 +34,18 @@ add_action( 'elementor/element/before_section_start', function( $element, $secti
     $element->add_control(
       'element_condition_debug',
       [
-        'label' => __( 'Debug mode', 'elementor-pro' ),
+        'label' => __( 'Debug mode', 'ele-conditions' ),
         'type' =>  \Elementor\Controls_Manager::SWITCHER,
         'default' => '',
-        'label_on' => __( 'On', 'elementor' ),
-        'label_off' => __( 'Off', 'elementor' ),
+        'label_on' => __( 'On', 'ele-conditions' ),
+        'label_off' => __( 'Off', 'ele-conditions' ),
       ]
     );
 
     $element->add_control(
       'element_condition_debug_info',
       [
-        'label' => __( 'For change to be visible unfocus the element (click on another element) and focus again.<ul><li style="background:lightpink">Red - unchanged</li> <li style="background:lightgreen">Green - changed</lu></ul>You can add your own variables, ie. hello: <small><br/>add_filter( "eleconditions_vars",function($custom_vars){<br/>$custom_vars["hello"]="Hello World!";<br/> return $custom_vars;<br/>});</small>' ),
+        'label' => __( 'For change to be visible unfocus the element (click on another element) and focus again.<ul><li style="background:lightpink">Red - unchanged</li> <li style="background:lightgreen">Green - changed</lu></ul>You can add your own variables, ie. hello: <small><br/>add_filter( "eleconditions_vars",function($custom_vars){<br/>$custom_vars["hello"]="Hello World!";<br/> return $custom_vars;<br/>});</small>', 'ele-conditions' ),
         'type' => \Elementor\Controls_Manager::RAW_HTML,
         'condition' => [
           'element_condition_debug!' => '',
