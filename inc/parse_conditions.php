@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 //// nu merge cu variabile cu valori booleene!!!!!!!! repara!!!! vezi exemplu my var
 function elecond_check_value($val,$values){
@@ -175,14 +176,14 @@ function elecond_debug($condition,$var1,$var2,$val1,$val2,$operator,$result){
 <div style="font-family:monospace; line-height: 2em;" class="ele_cond_debug">
  
   <div style="color:lightgray;">
-   <span style="background:<?php echo $color5;?>;"><?php echo $condition; ?></span>   
+   <span style="background:<?php echo esc_attr( $color5 );?>;"><?php echo esc_html( $condition ); ?></span>
   </div>
   <div>
-    <span style="background:<?php echo $color1;?>;"><?php echo $val1;?></span> 
-    <span style="background:<?php echo $color3;?>;"><?php echo $operator;?></span> 
-    <span style="background:<?php echo $color2;?>;"><?php echo $val2;?></span> 
-    <span style="background:<?php echo $color5;?>; color:white; font-weight:bold;">-&gt;</span>
-    <span style="background:<?php echo $color4;?>;"><?php echo $result;?></span>
+    <span style="background:<?php echo esc_attr( $color1 );?>;"><?php echo esc_html( $val1 );?></span>
+    <span style="background:<?php echo esc_attr( $color3 );?>;"><?php echo esc_html( $operator );?></span>
+    <span style="background:<?php echo esc_attr( $color2 );?>;"><?php echo esc_html( $val2 );?></span>
+    <span style="background:<?php echo esc_attr( $color5 );?>; color:white; font-weight:bold;">-&gt;</span>
+    <span style="background:<?php echo esc_attr( $color4 );?>;"><?php echo esc_html( $result );?></span>
   </div>
 <?php
 }

@@ -4,11 +4,11 @@ Tags: page-builder, elementor, condition, conditional, conditional elements
 Donate link: https://www.paypal.me/dudaster
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 1.0.6
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Stable tag: 1.0.7
+License: GPL-2.0-or-later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Some elements in Elementor should not be displayed or must be displayed under certain conditions. Implement conditional logic on Elementor elements.
+Add conditional display logic to Elementor elements and widgets based on custom conditions.
 
 You need Elementor plugin to use this plugin.
 
@@ -54,11 +54,19 @@ No. For the moment you can only do a basic condition with 2 operands and 1 compa
 
 == Changelog ==
 
+= 1.0.7 =
+* Add ABSPATH guard to inc/parse_conditions.php.
+* Escape all output in debug function (esc_html/esc_attr).
+* Fix date() to gmdate() for timezone consistency.
+* Fix license header to match readme (GPL-2.0-or-later).
+* Fix plugin name mismatch between header and readme.
+* Shorten short description.
+
 = 1.0.6 =
 * Rename plugin display name to comply with WordPress.org trademark guidelines.
 * Fix text domain to match plugin slug (ele-conditions).
-* Update Tested up to WordPress 6.8.
-* Add direct file access protection to PHP files.
+* Update Tested up to WordPress 6.9.
+* Add direct file access protection to inc/controls.php.
 
 = 1.0.5 =
 * Now it set the value of variabile to 0 if is compared to a number.
