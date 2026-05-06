@@ -74,15 +74,15 @@ echo ""
 if [ "${1}" == "--commit" ]; then
   echo "Committing trunk..."
   cd "$SVN_TMP"
-  svn commit -m "Release v$VERSION" --username dudaster --force-interactive
+  svn commit -m "Release v$VERSION" --username dudaster --non-interactive
   echo ""
   echo "Committing assets..."
   cd "$SVN_ASSETS_TMP"
-  svn commit -m "Screenshots v$VERSION" --username dudaster --force-interactive
+  svn commit -m "Screenshots v$VERSION" --username dudaster --non-interactive
   echo ""
   echo "Creating tag $VERSION..."
   svn copy "$SVN_URL/trunk" "$SVN_URL/tags/$VERSION" \
-    --message "Tag v$VERSION" --username dudaster --force-interactive
+    --message "Tag v$VERSION" --username dudaster --non-interactive
   echo ""
   echo "✓ Released v$VERSION to WordPress.org"
 else
