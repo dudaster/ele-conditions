@@ -54,6 +54,7 @@ svn update "$SVN_ASSETS_TMP" --set-depth infinity
 echo "Syncing assets files..."
 rsync -a --delete \
   --exclude='.DS_Store' \
+  --exclude='.svn' \
   "$ASSETS_DIR/" "$SVN_ASSETS_TMP/"
 
 # ── Stage assets new/deleted files in SVN ────────────────────
@@ -73,15 +74,15 @@ echo ""
 if [ "${1}" == "--commit" ]; then
   echo "Committing trunk..."
   cd "$SVN_TMP"
-  svn commit -m "Release v$VERSION" --username dudaster
+  svn commit -m "Release v$VERSION" --username dudaster --force-interactive
   echo ""
   echo "Committing assets..."
   cd "$SVN_ASSETS_TMP"
-  svn commit -m "Screenshots v$VERSION" --username dudaster
+  svn commit -m "Screenshots v$VERSION" --username dudaster --force-interactive
   echo ""
   echo "Creating tag $VERSION..."
   svn copy "$SVN_URL/trunk" "$SVN_URL/tags/$VERSION" \
-    --message "Tag v$VERSION" --username dudaster
+    --message "Tag v$VERSION" --username dudaster --force-interactive
   echo ""
   echo "✓ Released v$VERSION to WordPress.org"
 else
