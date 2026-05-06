@@ -7,7 +7,7 @@
 set -e
 
 SVN_URL="https://plugins.svn.wordpress.org/ele-conditions"
-PLUGIN_DIR="$(cd "$(dirname "$0")/plugin" && pwd)"
+PLUGIN_DIR="$(cd "$(dirname "$0")/ele-conditions" && pwd)"
 VERSION="$(grep 'Version:' "$PLUGIN_DIR/ele-conditions.php" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')"
 SVN_TMP="$(mktemp -d)/svn"
 

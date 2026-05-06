@@ -14,7 +14,7 @@ function wp_timezone() {
 
 // ── Load only the two pure functions ─────────────────────────
 // We extract them rather than require the whole file (which needs $post, $wp_query, etc.)
-require_once __DIR__ . '/../plugin/inc/parse_conditions.php';
+require_once __DIR__ . '/../ele-conditions/inc/parse_conditions.php';
 
 // ── Test runner ───────────────────────────────────────────────
 $passed = 0;

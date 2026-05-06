@@ -5,7 +5,7 @@ const vm     = require('vm');
 const path   = require('path');
 
 const SRC = fs.readFileSync(
-    path.join(__dirname, '..', 'plugin', 'assets', 'js', 'triggers.js'), 'utf8'
+    path.join(__dirname, '..', 'ele-conditions', 'assets', 'js', 'triggers.js'), 'utf8'
 );
 
 // ── Test runner ───────────────────────────────────────────────

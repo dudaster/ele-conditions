@@ -13,7 +13,7 @@
 
 ```
 ele-conditions/
-├── plugin/                     — fișierele pluginului (ce se deployează pe WP.org)
+├── ele-conditions/                     — fișierele pluginului (ce se deployează pe WP.org)
 │   ├── ele-conditions.php      — main plugin file, variabile built-in
 │   ├── inc/
 │   │   ├── controls.php        — secțiunea "Ele Conditions" în panoul Elementor
@@ -45,9 +45,9 @@ ele-conditions/
 
 ## Docker (wpmcp)
 
-Volumul din `docker-compose.yml` montează subfolder-ul `plugin/`:
+Volumul din `docker-compose.yml` montează subfolder-ul `ele-conditions/`:
 ```yaml
-- ${HOME}/Projects/ele-conditions/plugin:/var/www/html/wp-content/plugins/ele-conditions
+- ${HOME}/Projects/ele-conditions/ele-conditions:/var/www/html/wp-content/plugins/ele-conditions
 ```
 
 ## Arhitectura în două straturi
