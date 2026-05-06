@@ -4,7 +4,7 @@ Tags: page-builder, elementor, condition, conditional, conditional elements
 Donate link: https://www.paypal.me/dudaster
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 1.0.8
+Stable tag: 1.0.9
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,12 @@ No. For the moment you can only do a basic condition with 2 operands and 1 compa
 1. /assets/screenshot-1.png
 
 == Changelog ==
+
+= 1.0.9 =
+* Add time interval condition type with cross-midnight support.
+* Add built-in variables: comment_count, post_author, post_status, post_type, user_id, user_role, is_logged_in, current_hour, current_day, current_month, current_year, current_date, cart_count, cart_total.
+* Add ACF field support for posts (get_field on post ID).
+* Use WordPress timezone for all date/time variables.
 
 = 1.0.8 =
 * New visual conditions builder with REPEATER UI — no more manual text input.

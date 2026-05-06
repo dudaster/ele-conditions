@@ -4,21 +4,30 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 function elecond_evaluate_group( array $conditions, bool $debug = false ): bool {
 	if ( empty( $conditions ) ) return true;
 
-	$result = null;
+	$result     = null;
 	$prev_logic = 'AND';
 
 	foreach ( $conditions as $cond ) {
-		$var = ( isset( $cond['cond_var_preset'] ) && $cond['cond_var_preset'] === 'custom' )
-			? ( $cond['cond_var_custom'] ?? '' )
-			: ( $cond['cond_var_preset'] ?? '' );
+		$type = $cond['cond_type'] ?? 'simple';
 
-		$operator = $cond['cond_operator'] ?? '==';
-		$value    = $cond['cond_value'] ?? '';
+		if ( $type === 'time_interval' ) {
+			$cond_result = elecond_check_time_interval(
+				$cond['cond_time_from'] ?? '',
+				$cond['cond_time_to']   ?? ''
+			);
+		} else {
+			$var = ( ( $cond['cond_var_preset'] ?? '' ) === 'custom' )
+				? ( $cond['cond_var_custom'] ?? '' )
+				: ( $cond['cond_var_preset'] ?? '' );
 
-		if ( $var === '' ) continue;
+			if ( $var === '' ) {
+				$prev_logic = $cond['cond_logic'] ?? 'AND';
+				continue;
+			}
 
-		$expr       = $var . $operator . $value;
-		$cond_result = elecond_parse_condition( $expr, $debug );
+			$expr        = $var . ( $cond['cond_operator'] ?? '==' ) . ( $cond['cond_value'] ?? '' );
+			$cond_result = elecond_parse_condition( $expr, $debug );
+		}
 
 		if ( $result === null ) {
 			$result = $cond_result;
@@ -32,6 +41,23 @@ function elecond_evaluate_group( array $conditions, bool $debug = false ): bool 
 	}
 
 	return $result ?? true;
+}
+
+function elecond_check_time_interval( string $from, string $to ): bool {
+	if ( $from === '' || $to === '' ) return true;
+
+	$tz      = wp_timezone();
+	$now     = new DateTime( 'now', $tz );
+	$current = (int) $now->format( 'Hi' ); // e.g. 1430 for 14:30
+
+	$from_int = (int) str_replace( ':', '', $from ); // e.g. 900 for 09:00
+	$to_int   = (int) str_replace( ':', '', $to );
+
+	// Normal range (e.g. 09:00–17:00) or cross-midnight (e.g. 22:00–06:00)
+	if ( $from_int <= $to_int ) {
+		return $current >= $from_int && $current <= $to_int;
+	}
+	return $current >= $from_int || $current <= $to_int;
 }
 
 //// nu merge cu variabile cu valori booleene!!!!!!!! repara!!!! vezi exemplu my var
@@ -181,10 +207,16 @@ function elecond_prepare_values($keys){
         if (isset($post->ID)) {
           $custom_field=get_post_meta( $post->ID, $key, true); //echo "<br/>..".$key." :"; print_r($custom_field);
         }
-        $value[$key]=isset($custom_field) ? $custom_field : "";//pune custom field sau sa stearga keya daca nu are valoare 
+        $value[$key]=isset($custom_field) ? $custom_field : "";//pune custom field sau sa stearga keya daca nu are valoare
         if ($value[$key]=="" && function_exists("getProductAttributes") ) $value[$key] = getProductAttributes($post->ID,$key); // iau custom product attribute
-        if ($value[$key]=="" && function_exists('get_field') && $var->term_id) $value[$key] = get_field($key, $var->taxonomy.'_'.$var->term_id);// iau custom field de la taxonomie
-        if ($value[$key]=="") 
+        // ACF: post field
+        if ($value[$key]=="" && function_exists('get_field') && isset($post->ID)) {
+          $acf_val = get_field($key, $post->ID);
+          if ($acf_val !== false && $acf_val !== null && $acf_val !== '') $value[$key] = $acf_val;
+        }
+        // ACF: taxonomy field
+        if ($value[$key]=="" && function_exists('get_field') && isset($var->term_id)) $value[$key] = get_field($key, $var->taxonomy.'_'.$var->term_id);
+        if ($value[$key]=="")
             $value[$key]=isset($wp_query->query_vars[$key]) ? $wp_query->query_vars[$key] : ""; //get query_vars
       }
     }

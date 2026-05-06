@@ -16,53 +16,93 @@ add_action( 'elementor/element/before_section_start', function( $element, $secti
 
 	$repeater = new \Elementor\Repeater();
 
+	// ── Condition type ──────────────────────────────────────
+	$repeater->add_control(
+		'cond_type',
+		[
+			'label'   => __( 'Type', 'ele-conditions' ),
+			'type'    => \Elementor\Controls_Manager::SELECT,
+			'options' => [
+				'simple'        => __( 'Variable comparison', 'ele-conditions' ),
+				'time_interval' => __( 'Time interval', 'ele-conditions' ),
+			],
+			'default' => 'simple',
+		]
+	);
+
+	// ── Simple: variable ────────────────────────────────────
 	$repeater->add_control(
 		'cond_var_preset',
 		[
-			'label'   => __( 'Variable', 'ele-conditions' ),
-			'type'    => \Elementor\Controls_Manager::SELECT,
-			'options' => [
-				''            => __( '— select —', 'ele-conditions' ),
-				'ID'          => 'ID',
-				'name'        => 'name',
-				'post_excerpt'=> 'post_excerpt',
-				'description' => 'description',
-				'permalink'   => 'permalink',
-				'content'     => 'content',
-				'now'         => 'now',
-				'custom'      => __( 'Custom...', 'ele-conditions' ),
+			'label'     => __( 'Variable', 'ele-conditions' ),
+			'type'      => \Elementor\Controls_Manager::SELECT,
+			'options'   => [
+				''              => __( '— select —', 'ele-conditions' ),
+				// Post
+				'ID'            => 'ID',
+				'post_status'   => 'post_status',
+				'post_type'     => 'post_type',
+				'post_author'   => 'post_author',
+				'post_author_id'=> 'post_author_id',
+				'comment_count' => 'comment_count',
+				// User
+				'is_logged_in'  => 'is_logged_in',
+				'user_id'       => 'user_id',
+				'user_role'     => 'user_role',
+				// Time
+				'current_hour'  => 'current_hour  (0–23)',
+				'current_day'   => 'current_day   (1=Mon … 7=Sun)',
+				'current_month' => 'current_month (1–12)',
+				'current_year'  => 'current_year',
+				'current_date'  => 'current_date  (Y-m-d)',
+				'now'           => 'now            (Y-m-d H:i:s)',
+				// WooCommerce
+				'cart_count'    => 'cart_count (WooCommerce)',
+				'cart_total'    => 'cart_total (WooCommerce)',
+				// Other
+				'name'          => 'name',
+				'post_excerpt'  => 'post_excerpt',
+				'description'   => 'description',
+				'permalink'     => 'permalink',
+				'content'       => 'content',
+				'custom'        => __( 'Custom / ACF / meta…', 'ele-conditions' ),
 			],
-			'default' => '',
+			'default'   => '',
+			'condition' => [ 'cond_type' => 'simple' ],
 		]
 	);
 
 	$repeater->add_control(
 		'cond_var_custom',
 		[
-			'label'       => __( 'Custom variable name', 'ele-conditions' ),
+			'label'       => __( 'Variable / field name', 'ele-conditions' ),
 			'type'        => \Elementor\Controls_Manager::TEXT,
-			'placeholder' => __( 'e.g. my_field', 'ele-conditions' ),
+			'placeholder' => __( 'e.g. my_acf_field', 'ele-conditions' ),
 			'label_block' => true,
-			'condition'   => [ 'cond_var_preset' => 'custom' ],
+			'condition'   => [
+				'cond_type'       => 'simple',
+				'cond_var_preset' => 'custom',
+			],
 		]
 	);
 
 	$repeater->add_control(
 		'cond_operator',
 		[
-			'label'   => __( 'Operator', 'ele-conditions' ),
-			'type'    => \Elementor\Controls_Manager::SELECT,
-			'options' => [
+			'label'     => __( 'Operator', 'ele-conditions' ),
+			'type'      => \Elementor\Controls_Manager::SELECT,
+			'options'   => [
 				'=='  => '== (equal)',
 				'!='  => '!= (not equal)',
 				'===' => '=== (strict equal)',
 				'!==' => '!== (strict not equal)',
-				'>'   => '> (greater than)',
-				'<'   => '< (less than)',
+				'>'   => '>  (greater than)',
+				'<'   => '<  (less than)',
 				'>='  => '>= (greater or equal)',
 				'<='  => '<= (less or equal)',
 			],
-			'default' => '==',
+			'default'   => '==',
+			'condition' => [ 'cond_type' => 'simple' ],
 		]
 	);
 
@@ -71,21 +111,47 @@ add_action( 'elementor/element/before_section_start', function( $element, $secti
 		[
 			'label'       => __( 'Value', 'ele-conditions' ),
 			'type'        => \Elementor\Controls_Manager::TEXT,
-			'placeholder' => __( 'e.g. 5, true, null, published', 'ele-conditions' ),
+			'placeholder' => __( 'e.g. publish, administrator, true, 5', 'ele-conditions' ),
 			'label_block' => true,
+			'condition'   => [ 'cond_type' => 'simple' ],
+		]
+	);
+
+	// ── Time interval ───────────────────────────────────────
+	$repeater->add_control(
+		'cond_time_from',
+		[
+			'label'       => __( 'From (HH:MM)', 'ele-conditions' ),
+			'type'        => \Elementor\Controls_Manager::TEXT,
+			'placeholder' => '09:00',
+			'label_block' => true,
+			'condition'   => [ 'cond_type' => 'time_interval' ],
 		]
 	);
 
 	$repeater->add_control(
+		'cond_time_to',
+		[
+			'label'       => __( 'To (HH:MM)', 'ele-conditions' ),
+			'type'        => \Elementor\Controls_Manager::TEXT,
+			'placeholder' => '17:00',
+			'description' => __( 'Uses WordPress timezone. Cross-midnight supported (e.g. 22:00–06:00).', 'ele-conditions' ),
+			'label_block' => true,
+			'condition'   => [ 'cond_type' => 'time_interval' ],
+		]
+	);
+
+	// ── AND / OR connector ──────────────────────────────────
+	$repeater->add_control(
 		'cond_logic',
 		[
-			'label'       => __( 'Connect next with', 'ele-conditions' ),
-			'type'        => \Elementor\Controls_Manager::SELECT,
-			'options'     => [
+			'label'   => __( 'Connect next with', 'ele-conditions' ),
+			'type'    => \Elementor\Controls_Manager::SELECT,
+			'options' => [
 				'AND' => __( 'AND — all must match', 'ele-conditions' ),
-				'OR'  => __( 'OR — any must match', 'ele-conditions' ),
+				'OR'  => __( 'OR  — any must match', 'ele-conditions' ),
 			],
-			'default'     => 'AND',
+			'default' => 'AND',
 		]
 	);
 
@@ -95,7 +161,7 @@ add_action( 'elementor/element/before_section_start', function( $element, $secti
 			'label'       => __( 'Conditions', 'ele-conditions' ),
 			'type'        => \Elementor\Controls_Manager::REPEATER,
 			'fields'      => $repeater->get_controls(),
-			'title_field' => '{{{ cond_var_preset === "custom" ? cond_var_custom : cond_var_preset }}} {{{ cond_operator }}} {{{ cond_value }}}',
+			'title_field' => '{{ cond_type === "time_interval" ? "⏱ " + cond_time_from + " – " + cond_time_to : (cond_var_preset === "custom" ? cond_var_custom : cond_var_preset) + " " + cond_operator + " " + cond_value }}',
 		]
 	);
 
@@ -115,27 +181,19 @@ add_action( 'elementor/element/before_section_start', function( $element, $secti
 
 add_action( 'elementor/widget/render_content', function( $content, $widget ) {
 	$settings = $widget->get_active_settings();
-
 	if ( empty( $settings['conditions_list'] ) ) return $content;
-
 	$debug = ! empty( $settings['element_condition_debug'] );
-
 	return elecond_evaluate_group( $settings['conditions_list'], $debug ) ? $content : '';
 }, 10, 2 );
 
 function elecond_hide_element( \Elementor\Element_Base $element ) {
 	$settings = $element->get_active_settings();
-
 	if ( empty( $settings['conditions_list'] ) ) return;
-
 	$debug = ! empty( $settings['element_condition_debug'] );
-
 	if ( elecond_evaluate_group( $settings['conditions_list'], $debug ) ) return;
-
 	$style = $debug && ( current_user_can( 'editor' ) || current_user_can( 'administrator' ) )
 		? 'opacity:0.5; border: 3px solid red;'
 		: 'display:none;';
-
 	$element->add_render_attribute( '_wrapper', [ 'style' => $style ] );
 }
 
