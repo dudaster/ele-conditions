@@ -1,6 +1,38 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+function elecond_get_meta_acf_options(): array {
+	$options = [ '' => __( '— select field —', 'ele-conditions' ) ];
+
+	// ACF field groups
+	if ( function_exists( 'acf_get_field_groups' ) ) {
+		foreach ( acf_get_field_groups() as $group ) {
+			$fields = acf_get_fields( $group['key'] );
+			if ( ! $fields ) continue;
+			foreach ( $fields as $field ) {
+				$options[ $field['name'] ] = $field['label'] . '  [ACF]';
+			}
+		}
+	}
+
+	// Post meta keys (exclude internal WP keys starting with _)
+	global $wpdb;
+	$keys = $wpdb->get_col(
+		"SELECT DISTINCT meta_key FROM {$wpdb->postmeta}
+		 WHERE meta_key NOT LIKE '\_%'
+		 ORDER BY meta_key LIMIT 300"
+	);
+	foreach ( $keys as $key ) {
+		if ( ! isset( $options[ $key ] ) ) {
+			$options[ $key ] = $key . '  [meta]';
+		}
+	}
+
+	$options['__manual__'] = __( '— type manually —', 'ele-conditions' );
+
+	return $options;
+}
+
 function elecond_evaluate_group( array $conditions, bool $debug = false ): bool {
 	if ( empty( $conditions ) ) return true;
 
@@ -21,9 +53,17 @@ function elecond_evaluate_group( array $conditions, bool $debug = false ): bool 
 				$cond['cond_datetime_to']   ?? ''
 			);
 		} else {
-			$var = ( ( $cond['cond_var_preset'] ?? '' ) === 'custom' )
-				? ( $cond['cond_var_custom'] ?? '' )
-				: ( $cond['cond_var_preset'] ?? '' );
+			$preset = $cond['cond_var_preset'] ?? '';
+			if ( $preset === 'acf_meta' ) {
+				$picked = $cond['cond_var_acf_meta'] ?? '';
+				$var    = $picked === '__manual__'
+					? ( $cond['cond_var_acf_manual'] ?? '' )
+					: $picked;
+			} elseif ( $preset === 'custom' ) {
+				$var = $cond['cond_var_custom'] ?? '';
+			} else {
+				$var = $preset;
+			}
 
 			if ( $var === '' ) {
 				$prev_logic = $cond['cond_logic'] ?? 'AND';

@@ -65,20 +65,54 @@ add_action( 'elementor/element/before_section_start', function( $element, $secti
 				'post_excerpt'  => 'post_excerpt',
 				'description'   => 'description',
 				'permalink'     => 'permalink',
-				'content'       => 'content',
-				'custom'        => __( 'Custom / ACF / meta…', 'ele-conditions' ),
+				'content'         => 'content',
+				'content_length'  => 'content_length  (characters)',
+				'excerpt_length'  => 'excerpt_length  (characters)',
+				'acf_meta'        => __( 'ACF / Meta field (dropdown)…', 'ele-conditions' ),
+				'custom'          => __( 'Type manually…', 'ele-conditions' ),
 			],
 			'default'   => '',
 			'condition' => [ 'cond_type' => 'simple' ],
 		]
 	);
 
+	// ACF / meta dropdown
+	$repeater->add_control(
+		'cond_var_acf_meta',
+		[
+			'label'       => __( 'Field', 'ele-conditions' ),
+			'type'        => \Elementor\Controls_Manager::SELECT2,
+			'options'     => elecond_get_meta_acf_options(),
+			'label_block' => true,
+			'condition'   => [
+				'cond_type'       => 'simple',
+				'cond_var_preset' => 'acf_meta',
+			],
+		]
+	);
+
+	$repeater->add_control(
+		'cond_var_acf_manual',
+		[
+			'label'       => __( 'Field name', 'ele-conditions' ),
+			'type'        => \Elementor\Controls_Manager::TEXT,
+			'placeholder' => __( 'e.g. my_field', 'ele-conditions' ),
+			'label_block' => true,
+			'condition'   => [
+				'cond_type'        => 'simple',
+				'cond_var_preset'  => 'acf_meta',
+				'cond_var_acf_meta'=> '__manual__',
+			],
+		]
+	);
+
+	// Manual text input
 	$repeater->add_control(
 		'cond_var_custom',
 		[
-			'label'       => __( 'Variable / field name', 'ele-conditions' ),
+			'label'       => __( 'Variable name', 'ele-conditions' ),
 			'type'        => \Elementor\Controls_Manager::TEXT,
-			'placeholder' => __( 'e.g. my_acf_field', 'ele-conditions' ),
+			'placeholder' => __( 'e.g. my_field', 'ele-conditions' ),
 			'label_block' => true,
 			'condition'   => [
 				'cond_type'       => 'simple',

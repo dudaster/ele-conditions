@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: Ele Conditions for Elementor
- * Version: 1.0.10
+ * Version: 1.0.11
  * Description: Conditional display logic for Elementor elements and widgets.
  * Plugin URI: https://www.eletemplator.com
  * Author: Liviu Duda
@@ -37,6 +37,8 @@ function elecond_keywords( $custom_vars ) {
 		$custom_vars['post_author_id'] = (int) $post->post_author;
 		$custom_vars['post_status']    = $post->post_status;
 		$custom_vars['post_type']      = $post->post_type;
+		$custom_vars['content_length'] = mb_strlen( wp_strip_all_tags( $post->post_content ) );
+		$custom_vars['excerpt_length'] = mb_strlen( wp_strip_all_tags( get_the_excerpt( $post->ID ) ) );
 	}
 
 	// Current user
