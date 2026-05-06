@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: Ele Conditions for Elementor
- * Version: 1.0.15
+ * Version: 2.0.0
  * Description: Conditional display logic for Elementor elements and widgets.
  * Plugin URI: https://www.eletemplator.com
  * Author: Liviu Duda
@@ -21,7 +21,7 @@ add_action( 'wp_enqueue_scripts', function() {
 		'elecond-triggers',
 		plugin_dir_url( __FILE__ ) . 'assets/js/triggers.js',
 		[],
-		'1.0.15',
+		'2.0.0',
 		true
 	);
 } );
