@@ -24,7 +24,8 @@ add_action( 'elementor/element/before_section_start', function( $element, $secti
 			'type'    => \Elementor\Controls_Manager::SELECT,
 			'options' => [
 				'simple'        => __( 'Variable comparison', 'ele-conditions' ),
-				'time_interval' => __( 'Time interval', 'ele-conditions' ),
+				'time_interval' => __( 'Time interval (daily, HH:MM)', 'ele-conditions' ),
+				'date_interval' => __( 'Date/time interval (YYYY-MM-DD)', 'ele-conditions' ),
 			],
 			'default' => 'simple',
 		]
@@ -141,6 +142,31 @@ add_action( 'elementor/element/before_section_start', function( $element, $secti
 		]
 	);
 
+	// ── Date/time interval ─────────────────────────────────
+	$repeater->add_control(
+		'cond_datetime_from',
+		[
+			'label'       => __( 'From', 'ele-conditions' ),
+			'type'        => \Elementor\Controls_Manager::TEXT,
+			'placeholder' => '2026-01-01 09:00',
+			'description' => __( 'Format: YYYY-MM-DD or YYYY-MM-DD HH:MM', 'ele-conditions' ),
+			'label_block' => true,
+			'condition'   => [ 'cond_type' => 'date_interval' ],
+		]
+	);
+
+	$repeater->add_control(
+		'cond_datetime_to',
+		[
+			'label'       => __( 'To', 'ele-conditions' ),
+			'type'        => \Elementor\Controls_Manager::TEXT,
+			'placeholder' => '2026-01-31 17:00',
+			'description' => __( 'Uses WordPress timezone. Inclusive on both ends.', 'ele-conditions' ),
+			'label_block' => true,
+			'condition'   => [ 'cond_type' => 'date_interval' ],
+		]
+	);
+
 	// ── AND / OR connector ──────────────────────────────────
 	$repeater->add_control(
 		'cond_logic',
@@ -161,7 +187,7 @@ add_action( 'elementor/element/before_section_start', function( $element, $secti
 			'label'       => __( 'Conditions', 'ele-conditions' ),
 			'type'        => \Elementor\Controls_Manager::REPEATER,
 			'fields'      => $repeater->get_controls(),
-			'title_field' => '{{ cond_type === "time_interval" ? "⏱ " + cond_time_from + " – " + cond_time_to : (cond_var_preset === "custom" ? cond_var_custom : cond_var_preset) + " " + cond_operator + " " + cond_value }}',
+			'title_field' => '{{ cond_type === "time_interval" ? "⏱ " + cond_time_from + " – " + cond_time_to : cond_type === "date_interval" ? "📅 " + cond_datetime_from + " – " + cond_datetime_to : (cond_var_preset === "custom" ? cond_var_custom : cond_var_preset) + " " + cond_operator + " " + cond_value }}',
 		]
 	);
 

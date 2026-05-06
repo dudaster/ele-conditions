@@ -4,7 +4,7 @@ Tags: page-builder, elementor, condition, conditional, conditional elements
 Donate link: https://www.paypal.me/dudaster
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 1.0.9
+Stable tag: 1.0.10
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,9 @@ No. For the moment you can only do a basic condition with 2 operands and 1 compa
 1. /assets/screenshot-1.png
 
 == Changelog ==
+
+= 1.0.10 =
+* Add date/time interval condition type (YYYY-MM-DD or YYYY-MM-DD HH:MM, inclusive, WordPress timezone).
 
 = 1.0.9 =
 * Add time interval condition type with cross-midnight support.

@@ -15,6 +15,11 @@ function elecond_evaluate_group( array $conditions, bool $debug = false ): bool 
 				$cond['cond_time_from'] ?? '',
 				$cond['cond_time_to']   ?? ''
 			);
+		} elseif ( $type === 'date_interval' ) {
+			$cond_result = elecond_check_date_interval(
+				$cond['cond_datetime_from'] ?? '',
+				$cond['cond_datetime_to']   ?? ''
+			);
 		} else {
 			$var = ( ( $cond['cond_var_preset'] ?? '' ) === 'custom' )
 				? ( $cond['cond_var_custom'] ?? '' )
@@ -41,6 +46,32 @@ function elecond_evaluate_group( array $conditions, bool $debug = false ): bool 
 	}
 
 	return $result ?? true;
+}
+
+function elecond_check_date_interval( string $from, string $to ): bool {
+	if ( $from === '' && $to === '' ) return true;
+
+	$tz  = wp_timezone();
+	$now = new DateTime( 'now', $tz );
+
+	if ( $from !== '' ) {
+		// If no time part, treat as start of that day (00:00:00)
+		$from_dt = DateTime::createFromFormat( 'Y-m-d H:i', $from, $tz )
+			?: DateTime::createFromFormat( 'Y-m-d', $from, $tz );
+		if ( $from_dt && $now < $from_dt ) return false;
+	}
+
+	if ( $to !== '' ) {
+		// If no time part, treat as end of that day (23:59:59)
+		$to_dt = DateTime::createFromFormat( 'Y-m-d H:i', $to, $tz );
+		if ( ! $to_dt ) {
+			$to_dt = DateTime::createFromFormat( 'Y-m-d', $to, $tz );
+			if ( $to_dt ) $to_dt->setTime( 23, 59, 59 );
+		}
+		if ( $to_dt && $now > $to_dt ) return false;
+	}
+
+	return true;
 }
 
 function elecond_check_time_interval( string $from, string $to ): bool {
