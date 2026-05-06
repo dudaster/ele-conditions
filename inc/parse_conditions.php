@@ -1,6 +1,39 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+function elecond_evaluate_group( array $conditions, bool $debug = false ): bool {
+	if ( empty( $conditions ) ) return true;
+
+	$result = null;
+	$prev_logic = 'AND';
+
+	foreach ( $conditions as $cond ) {
+		$var = ( isset( $cond['cond_var_preset'] ) && $cond['cond_var_preset'] === 'custom' )
+			? ( $cond['cond_var_custom'] ?? '' )
+			: ( $cond['cond_var_preset'] ?? '' );
+
+		$operator = $cond['cond_operator'] ?? '==';
+		$value    = $cond['cond_value'] ?? '';
+
+		if ( $var === '' ) continue;
+
+		$expr       = $var . $operator . $value;
+		$cond_result = elecond_parse_condition( $expr, $debug );
+
+		if ( $result === null ) {
+			$result = $cond_result;
+		} elseif ( $prev_logic === 'AND' ) {
+			$result = $result && $cond_result;
+		} else {
+			$result = $result || $cond_result;
+		}
+
+		$prev_logic = $cond['cond_logic'] ?? 'AND';
+	}
+
+	return $result ?? true;
+}
+
 //// nu merge cu variabile cu valori booleene!!!!!!!! repara!!!! vezi exemplu my var
 function elecond_check_value($val,$values){
   switch($val){

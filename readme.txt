@@ -4,7 +4,7 @@ Tags: page-builder, elementor, condition, conditional, conditional elements
 Donate link: https://www.paypal.me/dudaster
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,12 @@ No. For the moment you can only do a basic condition with 2 operands and 1 compa
 1. /assets/screenshot-1.png
 
 == Changelog ==
+
+= 1.0.8 =
+* New visual conditions builder with REPEATER UI — no more manual text input.
+* Add SELECT for variables (ID, name, post_excerpt, description, permalink, content, now, custom).
+* Add SELECT for operators with labels.
+* Support multiple conditions with AND/OR logic per row.
 
 = 1.0.7 =
 * Add ABSPATH guard to inc/parse_conditions.php.
