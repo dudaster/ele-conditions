@@ -9,8 +9,8 @@ add_action( 'elementor/element/before_section_start', function( $element, $secti
 	$element->start_controls_section(
 		'conditional_section',
 		[
-			'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
-			'label' => __( 'Conditions', 'ele-conditions' ),
+			'tab'   => \Elementor\Controls_Manager::TAB_ADVANCED,
+			'label' => __( 'Ele Conditions', 'ele-conditions' ),
 		]
 	);
 

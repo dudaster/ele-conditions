@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: Ele Conditions for Elementor
- * Version: 1.0.13
+ * Version: 1.0.14
  * Description: Conditional display logic for Elementor elements and widgets.
  * Plugin URI: https://www.eletemplator.com
  * Author: Liviu Duda
