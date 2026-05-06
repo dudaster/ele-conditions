@@ -59,6 +59,9 @@ function elecond_evaluate_group( array $conditions, bool $debug = false ): bool 
 				$var    = $picked === '__manual__'
 					? ( $cond['cond_var_acf_manual'] ?? '' )
 					: $picked;
+			} elseif ( $preset === 'user_meta' ) {
+				$meta_key = $cond['cond_var_user_meta'] ?? '';
+				$var      = $meta_key !== '' ? 'um_' . $meta_key : '';
 			} elseif ( $preset === 'custom' ) {
 				$var = $cond['cond_var_custom'] ?? '';
 			} else {
@@ -291,6 +294,14 @@ function elecond_prepare_values($keys){
         if ($value[$key]=="" && function_exists('get_field') && isset($var->term_id)) $value[$key] = get_field($key, $var->taxonomy.'_'.$var->term_id);
         if ($value[$key]=="")
             $value[$key]=isset($wp_query->query_vars[$key]) ? $wp_query->query_vars[$key] : ""; //get query_vars
+        // User meta: um_ prefix (e.g. um_city → get_user_meta on current user with key 'city')
+        if ( $value[$key] === '' && strncmp( $key, 'um_', 3 ) === 0 ) {
+          $u = wp_get_current_user();
+          if ( $u->ID ) {
+            $um_val = get_user_meta( $u->ID, substr( $key, 3 ), true );
+            if ( $um_val !== false && $um_val !== '' ) $value[$key] = $um_val;
+          }
+        }
       }
     }
   }

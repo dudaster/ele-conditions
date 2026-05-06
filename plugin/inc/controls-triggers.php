@@ -8,7 +8,7 @@ add_action( 'elementor/element/before_section_start', function( $element, $secti
 		'triggers_section',
 		[
 			'tab'   => \Elementor\Controls_Manager::TAB_ADVANCED,
-			'label' => __( 'Triggered', 'ele-conditions' ),
+			'label' => __( 'Triggers', 'ele-conditions' ),
 		]
 	);
 
@@ -21,9 +21,16 @@ add_action( 'elementor/element/before_section_start', function( $element, $secti
 			'label'   => __( 'Trigger', 'ele-conditions' ),
 			'type'    => \Elementor\Controls_Manager::SELECT,
 			'options' => [
-				'click' => __( 'Click', 'ele-conditions' ),
-				'hover' => __( 'Hover (mouse enter)', 'ele-conditions' ),
-				'delay' => __( 'Delay on load', 'ele-conditions' ),
+				'click'           => __( 'Click', 'ele-conditions' ),
+				'hover'           => __( 'Hover (mouse enter)', 'ele-conditions' ),
+				'delay'           => __( 'Delay on load', 'ele-conditions' ),
+				'scroll_into_view'=> __( 'Scroll into view', 'ele-conditions' ),
+				'time_on_page'    => __( 'Time on page', 'ele-conditions' ),
+				'exit_intent'     => __( 'Exit intent', 'ele-conditions' ),
+				'first_visit'     => __( 'First visit', 'ele-conditions' ),
+				'nth_visit'       => __( 'Nth visit', 'ele-conditions' ),
+				'ab_group_a'      => __( 'A/B — Group A', 'ele-conditions' ),
+				'ab_group_b'      => __( 'A/B — Group B', 'ele-conditions' ),
 			],
 			'default' => 'click',
 		]
@@ -39,6 +46,45 @@ add_action( 'elementor/element/before_section_start', function( $element, $secti
 			'step'        => 100,
 			'description' => __( 'Milliseconds after page load before action fires.', 'ele-conditions' ),
 			'condition'   => [ 'trigger_type' => 'delay' ],
+		]
+	);
+
+	$repeater->add_control(
+		'trigger_time_seconds',
+		[
+			'label'       => __( 'Seconds on page', 'ele-conditions' ),
+			'type'        => \Elementor\Controls_Manager::NUMBER,
+			'default'     => 10,
+			'min'         => 1,
+			'step'        => 1,
+			'description' => __( 'Action fires after the user has spent this many seconds on the page.', 'ele-conditions' ),
+			'condition'   => [ 'trigger_type' => 'time_on_page' ],
+		]
+	);
+
+	$repeater->add_control(
+		'trigger_visit_count',
+		[
+			'label'       => __( 'Visit number', 'ele-conditions' ),
+			'type'        => \Elementor\Controls_Manager::NUMBER,
+			'default'     => 2,
+			'min'         => 1,
+			'step'        => 1,
+			'description' => __( 'Action fires on exactly this page-view count (tracked per URL via localStorage).', 'ele-conditions' ),
+			'condition'   => [ 'trigger_type' => 'nth_visit' ],
+		]
+	);
+
+	$repeater->add_control(
+		'trigger_ab_name',
+		[
+			'label'       => __( 'Test name', 'ele-conditions' ),
+			'type'        => \Elementor\Controls_Manager::TEXT,
+			'default'     => 'default',
+			'placeholder' => __( 'e.g. hero_banner', 'ele-conditions' ),
+			'description' => __( 'Unique name for this A/B test. Group is assigned randomly and stored in localStorage.', 'ele-conditions' ),
+			'label_block' => true,
+			'condition'   => [ 'trigger_type' => [ 'ab_group_a', 'ab_group_b' ] ],
 		]
 	);
 
@@ -114,17 +160,41 @@ add_action( 'elementor/element/before_section_start', function( $element, $secti
 		]
 	);
 
+	// ── Hide initially ───────────────────────────────────────
+	$element->add_control(
+		'trigger_hide_initially',
+		[
+			'label'       => __( 'Hide initially', 'ele-conditions' ),
+			'type'        => \Elementor\Controls_Manager::SWITCHER,
+			'default'     => '',
+			'label_on'    => __( 'Yes', 'ele-conditions' ),
+			'label_off'   => __( 'No', 'ele-conditions' ),
+			'description' => __( 'Hide element on load. Useful when a trigger should reveal it (e.g. Show after delay).', 'ele-conditions' ),
+		]
+	);
+
 	$element->end_controls_section();
 }, 10, 3 );
 
 // Attach triggers data to element wrapper on frontend render
 function elecond_attach_triggers( \Elementor\Element_Base $element ) {
 	$settings = $element->get_active_settings();
-	if ( empty( $settings['triggers_list'] ) ) return;
 
-	$element->add_render_attribute( '_wrapper', [
-		'data-elecond-triggers' => wp_json_encode( $settings['triggers_list'] ),
-	] );
+	if ( ! empty( $settings['triggers_list'] ) ) {
+		$encoded = wp_json_encode( $settings['triggers_list'] );
+		if ( $encoded !== false ) {
+			$element->add_render_attribute( '_wrapper', [
+				'data-elecond-triggers' => $encoded,
+			] );
+		}
+	}
+
+	// Checked independently so hide_initially works even without triggers
+	if ( ! empty( $settings['trigger_hide_initially'] ) ) {
+		$element->add_render_attribute( '_wrapper', [
+			'data-elecond-hide-initially' => '1',
+		] );
+	}
 }
 
 add_action( 'elementor/frontend/widget/before_render',  'elecond_attach_triggers' );

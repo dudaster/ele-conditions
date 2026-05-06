@@ -4,7 +4,7 @@ Tags: page-builder, elementor, condition, conditional, conditional elements
 Donate link: https://www.paypal.me/dudaster
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 1.0.14
+Stable tag: 1.0.15
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,14 @@ No. For the moment you can only do a basic condition with 2 operands and 1 compa
 1. /assets/screenshot-1.png
 
 == Changelog ==
+
+= 1.0.15 =
+* Add UTM / query string variables: utm_source, utm_medium, utm_campaign, utm_content, utm_term.
+* Add post-relative variables: post_age_days, post_has_thumbnail, post_word_count.
+* Add user meta field condition type (prefix um_ or via dropdown).
+* Add triggers: Scroll into view, Time on page, Exit intent, First visit, Nth visit, A/B Group A, A/B Group B.
+* Add "Hide initially" switcher in Triggered section.
+* A/B group assignments and visit counts persist via localStorage.
 
 = 1.0.14 =
 * Move Ele Conditions section from Style tab to Advanced tab.

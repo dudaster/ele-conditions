@@ -60,6 +60,16 @@ add_action( 'elementor/element/before_section_start', function( $element, $secti
 				// WooCommerce
 				'cart_count'    => 'cart_count (WooCommerce)',
 				'cart_total'    => 'cart_total (WooCommerce)',
+				// UTM / Query string
+				'utm_source'    => 'utm_source',
+				'utm_medium'    => 'utm_medium',
+				'utm_campaign'  => 'utm_campaign',
+				'utm_content'   => 'utm_content',
+				'utm_term'      => 'utm_term',
+				// Post-relative
+				'post_age_days'      => 'post_age_days  (days since publish)',
+				'post_has_thumbnail' => 'post_has_thumbnail  (true/false)',
+				'post_word_count'    => 'post_word_count  (words)',
 				// Other
 				'name'          => 'name',
 				'post_excerpt'  => 'post_excerpt',
@@ -68,6 +78,7 @@ add_action( 'elementor/element/before_section_start', function( $element, $secti
 				'content'         => 'content',
 				'content_length'  => 'content_length  (characters)',
 				'excerpt_length'  => 'excerpt_length  (characters)',
+				'user_meta'       => __( 'User meta field…', 'ele-conditions' ),
 				'acf_meta'        => __( 'ACF / Meta field (dropdown)…', 'ele-conditions' ),
 				'custom'          => __( 'Type manually…', 'ele-conditions' ),
 			],
@@ -102,6 +113,21 @@ add_action( 'elementor/element/before_section_start', function( $element, $secti
 				'cond_type'        => 'simple',
 				'cond_var_preset'  => 'acf_meta',
 				'cond_var_acf_meta'=> '__manual__',
+			],
+		]
+	);
+
+	// User meta field name
+	$repeater->add_control(
+		'cond_var_user_meta',
+		[
+			'label'       => __( 'Meta key', 'ele-conditions' ),
+			'type'        => \Elementor\Controls_Manager::TEXT,
+			'placeholder' => __( 'e.g. city, age, my_field', 'ele-conditions' ),
+			'label_block' => true,
+			'condition'   => [
+				'cond_type'       => 'simple',
+				'cond_var_preset' => 'user_meta',
 			],
 		]
 	);
@@ -218,7 +244,7 @@ add_action( 'elementor/element/before_section_start', function( $element, $secti
 			'label'       => __( 'Conditions', 'ele-conditions' ),
 			'type'        => \Elementor\Controls_Manager::REPEATER,
 			'fields'      => $repeater->get_controls(),
-			'title_field' => '{{ cond_type === "time_interval" ? "⏱ " + cond_time_from + " – " + cond_time_to : cond_type === "date_interval" ? "📅 " + cond_datetime_from + " – " + cond_datetime_to : (cond_var_preset === "custom" ? cond_var_custom : cond_var_preset) + " " + cond_operator + " " + cond_value }}',
+			'title_field' => '{{ cond_type === "time_interval" ? "⏱ " + cond_time_from + " – " + cond_time_to : cond_type === "date_interval" ? "📅 " + cond_datetime_from + " – " + cond_datetime_to : (cond_var_preset === "custom" ? cond_var_custom : cond_var_preset === "user_meta" ? "👤 " + cond_var_user_meta : cond_var_preset === "acf_meta" ? (cond_var_acf_meta === "__manual__" ? cond_var_acf_manual : cond_var_acf_meta) : cond_var_preset) + " " + cond_operator + " " + cond_value }}',
 		]
 	);
 

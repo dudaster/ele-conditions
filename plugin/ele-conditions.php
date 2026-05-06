@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: Ele Conditions for Elementor
- * Version: 1.0.14
+ * Version: 1.0.15
  * Description: Conditional display logic for Elementor elements and widgets.
  * Plugin URI: https://www.eletemplator.com
  * Author: Liviu Duda
@@ -21,7 +21,7 @@ add_action( 'wp_enqueue_scripts', function() {
 		'elecond-triggers',
 		plugin_dir_url( __FILE__ ) . 'assets/js/triggers.js',
 		[],
-		'1.0.13',
+		'1.0.15',
 		true
 	);
 } );
@@ -67,6 +67,23 @@ function elecond_keywords( $custom_vars ) {
 	if ( function_exists( 'WC' ) && WC()->cart ) {
 		$custom_vars['cart_count'] = WC()->cart->get_cart_contents_count();
 		$custom_vars['cart_total'] = (float) WC()->cart->subtotal;
+	}
+
+	// UTM / Query string
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended
+	$custom_vars['utm_source']   = sanitize_text_field( $_GET['utm_source']   ?? '' );
+	$custom_vars['utm_medium']   = sanitize_text_field( $_GET['utm_medium']   ?? '' );
+	$custom_vars['utm_campaign'] = sanitize_text_field( $_GET['utm_campaign'] ?? '' );
+	$custom_vars['utm_content']  = sanitize_text_field( $_GET['utm_content']  ?? '' );
+	$custom_vars['utm_term']     = sanitize_text_field( $_GET['utm_term']     ?? '' );
+	// phpcs:enable
+
+	// Post-relative
+	if ( isset( $post->ID ) ) {
+		$publish_time = get_post_time( 'U', true, $post->ID );
+		$custom_vars['post_age_days']      = (int) floor( ( time() - $publish_time ) / DAY_IN_SECONDS );
+		$custom_vars['post_has_thumbnail'] = has_post_thumbnail( $post->ID ) ? 'true' : 'false';
+		$custom_vars['post_word_count']    = str_word_count( wp_strip_all_tags( $post->post_content ) );
 	}
 
 	return $custom_vars;
