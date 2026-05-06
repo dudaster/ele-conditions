@@ -29,7 +29,11 @@ ele-conditions/
 ├── tests/
 │   ├── test-triggers.js        — 57 teste Node.js pentru triggers.js
 │   └── test-parse-conditions.php — teste PHP pentru funcțiile de parsing
-├── deploy-svn.sh               — script de deploy pe WordPress.org SVN
+├── wordpress-assets/           — screenshots și bannere pentru WordPress.org (SVN assets/)
+│   ├── screenshot-1.png
+│   ├── screenshot-2.png
+│   └── screenshot-3.png
+├── deploy-svn.sh               — script de deploy pe WordPress.org SVN (trunk + assets)
 └── .gitignore
 ```
 
@@ -45,7 +49,7 @@ ele-conditions/
 
 ## Docker (wpmcp)
 
-Volumul din `docker-compose.yml` montează subfolder-ul `ele-conditions/`:
+Volumul din `docker-compose.yml` montează subfolder-ul `ele-conditions/` (pluginul propriu-zis):
 ```yaml
 - ${HOME}/Projects/ele-conditions/ele-conditions:/var/www/html/wp-content/plugins/ele-conditions
 ```

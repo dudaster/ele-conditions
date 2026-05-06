@@ -124,7 +124,9 @@ Display conditions are evaluated server-side at render time — no JavaScript ne
 
 == Screenshots ==
 
-1. /assets/screenshot-1.png
+1. Triggers panel in Elementor Advanced tab — add a trigger with one click: choose trigger type (Click, Scroll into view, Exit intent…) and action (Show, Hide, Toggle, Add Class…).
+2. Multiple triggers on the same element — combine scroll_into_view → show with exit_intent → add_class for layered interactions.
+3. Display Conditions panel — variable comparison conditions with Variable, Operator, and Value; Debug mode toggle included.
 
 == Changelog ==
 
