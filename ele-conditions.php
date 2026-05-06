@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: Ele Conditions for Elementor
- * Version: 1.0.11
+ * Version: 1.0.12
  * Description: Conditional display logic for Elementor elements and widgets.
  * Plugin URI: https://www.eletemplator.com
  * Author: Liviu Duda
@@ -14,6 +14,11 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 define( 'ELECONDITIONS_DIR', plugin_dir_path( __FILE__ ) );
 require_once ELECONDITIONS_DIR . 'inc/controls.php';
+
+add_action( 'elementor/controls/register', function( $controls_manager ) {
+	require_once ELECONDITIONS_DIR . 'inc/control-datetime.php';
+	$controls_manager->register( new Elecond_Datetime_Control() );
+} );
 
 add_filter( 'eleconditions_vars', 'elecond_keywords' );
 function elecond_keywords( $custom_vars ) {

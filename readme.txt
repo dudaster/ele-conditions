@@ -4,7 +4,7 @@ Tags: page-builder, elementor, condition, conditional, conditional elements
 Donate link: https://www.paypal.me/dudaster
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 1.0.11
+Stable tag: 1.0.12
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,9 @@ No. For the moment you can only do a basic condition with 2 operands and 1 compa
 1. /assets/screenshot-1.png
 
 == Changelog ==
+
+= 1.0.12 =
+* Replace date/time text inputs with native datetime-local picker control.
 
 = 1.0.11 =
 * Add ACF/meta field dropdown (SELECT2) populated from database and ACF field groups.

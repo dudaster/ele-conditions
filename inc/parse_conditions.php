@@ -94,15 +94,17 @@ function elecond_check_date_interval( string $from, string $to ): bool {
 	$tz  = wp_timezone();
 	$now = new DateTime( 'now', $tz );
 
+	// Normalize: datetime-local uses T separator (2026-01-15T09:00), replace with space
+	$from = str_replace( 'T', ' ', $from );
+	$to   = str_replace( 'T', ' ', $to );
+
 	if ( $from !== '' ) {
-		// If no time part, treat as start of that day (00:00:00)
 		$from_dt = DateTime::createFromFormat( 'Y-m-d H:i', $from, $tz )
 			?: DateTime::createFromFormat( 'Y-m-d', $from, $tz );
 		if ( $from_dt && $now < $from_dt ) return false;
 	}
 
 	if ( $to !== '' ) {
-		// If no time part, treat as end of that day (23:59:59)
 		$to_dt = DateTime::createFromFormat( 'Y-m-d H:i', $to, $tz );
 		if ( ! $to_dt ) {
 			$to_dt = DateTime::createFromFormat( 'Y-m-d', $to, $tz );

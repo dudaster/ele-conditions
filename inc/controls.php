@@ -181,9 +181,7 @@ add_action( 'elementor/element/before_section_start', function( $element, $secti
 		'cond_datetime_from',
 		[
 			'label'       => __( 'From', 'ele-conditions' ),
-			'type'        => \Elementor\Controls_Manager::TEXT,
-			'placeholder' => '2026-01-01 09:00',
-			'description' => __( 'Format: YYYY-MM-DD or YYYY-MM-DD HH:MM', 'ele-conditions' ),
+			'type'        => Elecond_Datetime_Control::TYPE,
 			'label_block' => true,
 			'condition'   => [ 'cond_type' => 'date_interval' ],
 		]
@@ -193,8 +191,7 @@ add_action( 'elementor/element/before_section_start', function( $element, $secti
 		'cond_datetime_to',
 		[
 			'label'       => __( 'To', 'ele-conditions' ),
-			'type'        => \Elementor\Controls_Manager::TEXT,
-			'placeholder' => '2026-01-31 17:00',
+			'type'        => Elecond_Datetime_Control::TYPE,
 			'description' => __( 'Uses WordPress timezone. Inclusive on both ends.', 'ele-conditions' ),
 			'label_block' => true,
 			'condition'   => [ 'cond_type' => 'date_interval' ],
