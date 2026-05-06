@@ -4,7 +4,7 @@ Tags: page-builder, elementor, condition, conditional, conditional elements
 Donate link: https://www.paypal.me/dudaster
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 1.0.12
+Stable tag: 1.0.13
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,9 @@ No. For the moment you can only do a basic condition with 2 operands and 1 compa
 1. /assets/screenshot-1.png
 
 == Changelog ==
+
+= 1.0.13 =
+* Add "Triggered" tab in Elementor Advanced panel with Triggers (Click, Hover, Delay on load) and Actions (Show, Hide, Toggle, Add/Remove/Toggle Class, Scroll To, Focus, Close Others in Group).
 
 = 1.0.12 =
 * Replace date/time text inputs with native datetime-local picker control.
