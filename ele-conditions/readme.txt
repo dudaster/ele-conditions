@@ -3,7 +3,7 @@ Contributors: dudaster
 Tags: elementor, triggers, interactions, conditional, visibility
 Donate link: https://www.paypal.me/dudaster
 Requires at least: 5.9
-Tested up to: 6.9
+Tested up to: 7.0
 Stable tag: 2.0.0
 Requires PHP: 7.4
 License: GPL-2.0-or-later
